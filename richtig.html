@@ -158,41 +158,44 @@
         <button id="restart-quiz">Quiz Neustarten</button>
     </div>
 
-     <audio id="correctSound" preload="auto">
+    <audio id="correctSound" preload="auto">
         <source src="sounds/correct.mp3" type="audio/mpeg">
+        <source src="sounds/correct.ogg" type="audio/ogg"> Dein Browser unterstützt das Audio-Element nicht.
     </audio>
     <audio id="incorrectSound" preload="auto">
         <source src="sounds/incorrect.mp3" type="audio/mpeg">
+        <source src="sounds/incorrect.ogg" type="audio/ogg"> Dein Browser unterstützt das Audio-Element nicht.
     </audio>
 
     <script>
         const flagsData = [
-    { country: "Deutschland", flagImage: "flags/de.png" }, 
-    { country: "Frankreich", flagImage: "flags/fr.png" },
-    { country: "Japan", flagImage: "flags/jp.png" },       
-    { country: "Vereinigte Staaten", flagImage: "flags/us.png" },
-    { country: "Kanada", flagImage: "flags/ca.png" },
-    { country: "Brasilien", flagImage: "flags/br.png" },
-    { country: "Indien", flagImage: "flags/in.png" },
-    { country: "Australien", flagImage: "flags/au.png" },
-    { country: "China", flagImage: "flags/cn.png" },
-    { country: "Russland", flagImage: "flags/ru.png" },
-    { country: "Mexiko", flagImage: "flags/mx.png" },
-    { country: "Südafrika", flagImage: "flags/za.png" },
-    { country: "Argentinien", flagImage: "flags/ar.png" },
-    { country: "Italien", flagImage: "flags/it.png" },
-    { country: "Spanien", flagImage: "flags/es.png" },
-    { country: "Südkorea", flagImage: "flags/kr.png" },
-    { country: "Türkei", flagImage: "flags/tr.png" },
-    { country: "Saudi-Arabien", flagImage: "flags/sa.png" },
-    { country: "Indonesien", flagImage: "flags/id.png" },
-    { country: "Ägypten", flagImage: "flags/eg.png" },
-    { country: "Nigeria", flagImage: "flags/ng.png" },
-    { country: "Schweden", flagImage: "flags/se.png" },
-    { country: "Niederlande", flagImage: "flags/nl.png" },
-    { country: "Belgien", flagImage: "flags/be.png" },
-    { country: "Schweiz", flagImage: "flags/ch.png" },
-];
+            { country: "Deutschland", flagImage: "https://flagcdn.com/w320/de.png" },
+            { country: "Frankreich", flagImage: "https://flagcdn.com/w320/fr.png" },
+            { country: "Japan", flagImage: "https://flagcdn.com/w320/jp.png" },
+            { country: "Vereinigte Staaten", flagImage: "https://flagcdn.com/w320/us.png" },
+            { country: "Kanada", flagImage: "https://flagcdn.com/w320/ca.png" },
+            { country: "Brasilien", flagImage: "https://flagcdn.com/w320/br.png" },
+            { country: "Indien", flagImage: "https://flagcdn.com/w320/in.png" },
+            { country: "Australien", flagImage: "https://flagcdn.com/w320/au.png" },
+            { country: "China", flagImage: "https://flagcdn.com/w320/cn.png" },
+            { country: "Russland", flagImage: "https://flagcdn.com/w320/ru.png" },
+            { country: "Mexiko", flagImage: "https://flagcdn.com/w320/mx.png" },
+            { country: "Südafrika", flagImage: "https://flagcdn.com/w320/za.png" },
+            { country: "Argentinien", flagImage: "https://flagcdn.com/w320/ar.png" },
+            { country: "Italien", flagImage: "https://flagcdn.com/w320/it.png" },
+            { country: "Spanien", flagImage: "https://flagcdn.com/w320/es.png" },
+            { country: "Südkorea", flagImage: "https://flagcdn.com/w320/kr.png" },
+            { country: "Türkei", flagImage: "https://flagcdn.com/w320/tr.png" },
+            { country: "Saudi-Arabien", flagImage: "https://flagcdn.com/w320/sa.png" },
+            { country: "Indonesien", flagImage: "https://flagcdn.com/w320/id.png" },
+            { country: "Ägypten", flagImage: "https://flagcdn.com/w320/eg.png" },
+            { country: "Nigeria", flagImage: "https://flagcdn.com/w320/ng.png" },
+            { country: "Schweden", flagImage: "https://flagcdn.com/w320/se.png" },
+            { country: "Niederlande", flagImage: "https://flagcdn.com/w320/nl.png" },
+            { country: "Belgien", flagImage: "https://flagcdn.com/w320/be.png" },
+            { country: "Schweiz", flagImage: "https://flagcdn.com/w320/ch.png" },
+        ];
+
         // Shuffle the flagsData array once at the beginning to randomize question order
         const shuffledFlagsData = shuffleArray([...flagsData]);
 
@@ -204,6 +207,13 @@
         const totalQuestionsDisplay = document.getElementById("total-questions");
         const restartQuizButton = document.getElementById("restart-quiz");
         const exitQuizButton = document.getElementById("exit-quiz-button");
+
+        // Get references to the audio elements
+        // IMPORTANT: Ensure 'sounds/correct.mp3' and 'sounds/incorrect.mp3' exist relative to this HTML file.
+        // For example, if your HTML is at 'yourrepo.github.io/quiz.html', sounds should be at 'yourrepo.github.io/sounds/correct.mp3'
+        const correctSound = document.getElementById("correctSound");
+        const incorrectSound = document.getElementById("incorrectSound");
+
 
         let currentQuestionIndex = 0;
         let score = 0;
@@ -224,13 +234,12 @@
             const img = document.createElement("img");
             img.src = currentQuestion.flagImage;
             img.alt = `Flagge von ${currentQuestion.country}`;
-            img.classList.add("flag-item"); // Add a class for potential styling
+            img.classList.add("flag-item");
             flagContainer.appendChild(img);
 
             const correctAnswer = currentQuestion.country;
-            // Generate 3 wrong answers from the *original* flagsData to ensure variety
             const choices = [correctAnswer, ...generateWrongAnswers(correctAnswer, flagsData)];
-            shuffleArray(choices); // Shuffle the choices for the buttons
+            shuffleArray(choices);
 
             choices.forEach(choice => {
                 const button = document.createElement("button");
@@ -244,17 +253,14 @@
         function generateWrongAnswers(correctAnswer, allFlags) {
             const allCountries = allFlags.map(flag => flag.country);
             const wrongAnswersPool = allCountries.filter(country => country !== correctAnswer);
-            return shuffleArray(wrongAnswersPool).slice(0, 3); // Take 3 random wrong answers
+            return shuffleArray(wrongAnswersPool).slice(0, 3);
         }
 
         function shuffleArray(array) {
             let currentIndex = array.length, randomIndex;
-            // While there remain elements to shuffle.
             while (currentIndex !== 0) {
-                // Pick a remaining element.
                 randomIndex = Math.floor(Math.random() * currentIndex);
                 currentIndex--;
-                // And swap it with the current element.
                 [array[currentIndex], array[randomIndex]] = [
                     array[randomIndex], array[currentIndex]];
             }
@@ -269,10 +275,16 @@
             if (selectedAnswer === currentQuestion.country) {
                 feedback.textContent = "Richtig!";
                 feedback.style.color = "#4CAF50"; // Green for correct
+                // Reset and play sound to ensure it plays every time
+                correctSound.currentTime = 0; 
+                correctSound.play(); 
                 score++;
             } else {
                 feedback.textContent = `Falsch! Die richtige Antwort war: ${currentQuestion.country}`;
                 feedback.style.color = "#f44336"; // Red for incorrect
+                // Reset and play sound to ensure it plays every time
+                incorrectSound.currentTime = 0;
+                incorrectSound.play();
             }
 
             // Automatically go to the next question after a short delay
@@ -281,42 +293,39 @@
 
         function nextQuestion() {
             currentQuestionIndex++;
-            displayQuestion(); // Calls displayQuestion, which handles showing results if quiz is over
+            displayQuestion();
         }
 
         function showResults() {
             flagContainer.style.display = "none";
             optionsContainer.style.display = "none";
             feedback.style.display = "none";
-            exitQuizButton.style.display = "none"; // Hide exit button on results screen
+            exitQuizButton.style.display = "none";
 
             resultsContainer.style.display = "block";
             finalScoreDisplay.textContent = score;
-            totalQuestionsDisplay.textContent = shuffledFlagsData.length; // Display total questions
+            totalQuestionsDisplay.textContent = shuffledFlagsData.length;
         }
 
         function restartQuiz() {
             currentQuestionIndex = 0;
             score = 0;
-            shuffleArray(shuffledFlagsData); // Reshuffle for a new quiz order
+            shuffleArray(shuffledFlagsData);
             flagContainer.style.display = "flex";
             optionsContainer.style.display = "flex";
             feedback.style.display = "block";
-            exitQuizButton.style.display = "inline-block"; // Show exit button again
+            exitQuizButton.style.display = "inline-block";
             resultsContainer.style.display = "none";
             displayQuestion();
         }
 
-        // Function to end the quiz immediately and show results
         function endQuiz() {
             showResults();
         }
 
-        // Event Listeners
         restartQuizButton.addEventListener("click", restartQuiz);
         exitQuizButton.addEventListener("click", endQuiz);
 
-        // Initial display of the first question
         displayQuestion();
     </script>
 </body>
