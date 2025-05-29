@@ -1,4 +1,4 @@
-<richtig>
+<flagge-quiz>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -209,8 +209,6 @@
         const exitQuizButton = document.getElementById("exit-quiz-button");
 
         // Get references to the audio elements
-        // IMPORTANT: Ensure 'sounds/correct.mp3' and 'sounds/incorrect.mp3' exist relative to this HTML file.
-        // For example, if your HTML is at 'yourrepo.github.io/quiz.html', sounds should be at 'yourrepo.github.io/sounds/correct.mp3'
         const correctSound = document.getElementById("correctSound");
         const incorrectSound = document.getElementById("incorrectSound");
 
@@ -275,14 +273,12 @@
             if (selectedAnswer === currentQuestion.country) {
                 feedback.textContent = "Richtig!";
                 feedback.style.color = "#4CAF50"; // Green for correct
-                // Reset and play sound to ensure it plays every time
-                correctSound.currentTime = 0; 
-                correctSound.play(); 
+                correctSound.currentTime = 0;
+                correctSound.play();
                 score++;
             } else {
                 feedback.textContent = `Falsch! Die richtige Antwort war: ${currentQuestion.country}`;
                 feedback.style.color = "#f44336"; // Red for incorrect
-                // Reset and play sound to ensure it plays every time
                 incorrectSound.currentTime = 0;
                 incorrectSound.play();
             }
@@ -297,14 +293,19 @@
         }
 
         function showResults() {
+            // Hide quiz elements
             flagContainer.style.display = "none";
             optionsContainer.style.display = "none";
             feedback.style.display = "none";
-            exitQuizButton.style.display = "none";
+            exitQuizButton.style.display = "none"; // Hide exit button on results screen
 
+            // Display results
             resultsContainer.style.display = "block";
             finalScoreDisplay.textContent = score;
             totalQuestionsDisplay.textContent = shuffledFlagsData.length;
+
+            // Signal Choregraphe that the quiz is finished
+            window.location.href = "alwebviewer://close"; // This tells Pepper's tablet to close the web view
         }
 
         function restartQuiz() {
@@ -320,6 +321,8 @@
         }
 
         function endQuiz() {
+            // This function is called when the "Quiz beenden" button is clicked
+            // It will also trigger the web view to close
             showResults();
         }
 
